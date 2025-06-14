@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class EnemyBulletShooter : MonoBehaviour
 {
-    private float shootInterval = 4f;
+    private float shootInterval;
     private float shootTimer = 0f;
-    private bool isShooting = false;
+
+    void Start()
+    {
+        shootInterval = Random.Range(3f, 7f);
+    }
 
     void Update()
     {
         shootTimer += Time.deltaTime;
-        if (shootTimer >= shootInterval && !isShooting)
+        if (shootTimer >= shootInterval)
         {
-            isShooting = true;
             shootTimer = 0f;
             FireBullets();
+
+            shootInterval = Random.Range(3f, 7f);
         }
     }
 

@@ -26,7 +26,19 @@ public class Drop : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            ShipStats.Instance.AddPower(itemType);
+            if (itemType == "HPItem")
+            {
+                ShipStats.Instance.SetCurrentHealth(ShipStats.Instance.GetCurrentHealth() + 20);
+            }
+            if (itemType == "ArmorItem")
+            {
+                ShipStats.Instance.SetCurrentShield(ShipStats.Instance.GetCurrentShield() + 20);
+            }
+            if (itemType == "UpdateItem")
+            {
+                ShipStats.Instance.SetBulletCount(ShipStats.Instance.GetBulletCount() + 1);
+            }
+
             Destroy(gameObject);
         }
     }

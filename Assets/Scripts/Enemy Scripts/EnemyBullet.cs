@@ -41,7 +41,7 @@ public class EnemyBullet : MonoBehaviour
         anim.enabled = true;
         anim.SetBool("Explosion", false);
 
-        rb.velocity = transform.right * ShipStats.Instance.bulletSpeed;
+        rb.velocity = transform.right * ShipStats.Instance.GetBulletSpeed();
     }
 
     void Update()
@@ -57,13 +57,13 @@ public class EnemyBullet : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             capsuleCollider.enabled = false;
-            if (ShipStats.Instance.currentShield > 0)
+            if (ShipStats.Instance.GetCurrentShield() > 0)
             {
-                ShipStats.Instance.currentShield -= damage;
+                ShipStats.Instance.SetCurrentShield(ShipStats.Instance.GetCurrentShield() - damage);
             }
             else
             {
-                ShipStats.Instance.currentHealth -= damage;
+                ShipStats.Instance.SetCurrentHealth(ShipStats.Instance.GetCurrentHealth() - damage);
             }
             StartCoroutine(BulletExposion());
         }

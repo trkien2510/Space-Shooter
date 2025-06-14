@@ -20,7 +20,7 @@ public class BulletShooter : MonoBehaviour
 
     private void FireBullets()
     {
-        int count = ShipStats.Instance.bulletCount;
+        int count = ShipStats.Instance.GetBulletCount();
 
         int large = Mathf.Min(count / 9, 1);
         count -= large * 9;

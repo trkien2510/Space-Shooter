@@ -8,8 +8,11 @@ public class Asteroid : MonoBehaviour
     private Animator anim;
     private Sprite sprite;
     private SpriteRenderer spriteRenderer;
+
+    [Header("health")]
     private float currentHealth = 10f;
     private float maxHealth;
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -34,17 +37,21 @@ public class Asteroid : MonoBehaviour
         float timer = Time.time/10f;
         maxHealth = 10f + timer;
         currentHealth = maxHealth;
+        isDead = false;
+
         rb.velocity = new Vector2(-0.1f, -0.2f).normalized * fallSpeed;
     }
 
     private void Update()
     {
+        transform.Rotate(0f, 0f, 1f * Time.fixedDeltaTime);
         if (transform.position.y <= -7f)
         {
             gameObject.SetActive(false);
         }
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && !isDead)
         {
+            isDead = true;
             StartCoroutine(AsteroidExplosion());
         }
     }
@@ -56,21 +63,20 @@ public class Asteroid : MonoBehaviour
             Bullet bullet = collision.GetComponent<Bullet>();
             if (bullet != null)
             {
-                float damage = bullet.bulletSize * ShipStats.Instance.bulletDamage;
+                float damage = bullet.bulletSize * ShipStats.Instance.GetBulletDamage();
                 TakeDamage(damage);
             }
         }
 
         if (collision.CompareTag("Player"))
         {
-            if (ShipStats.Instance.currentShield > 0)
+            if (ShipStats.Instance.GetCurrentShield() > 0)
             {
-                ShipStats.Instance.currentHealth -= (ShipStats.Instance.currentShield - 10 >= 0) ? 0 : -(ShipStats.Instance.currentShield - 10);
-                ShipStats.Instance.currentShield -= 10;
+                ShipStats.Instance.SetCurrentShield(ShipStats.Instance.GetCurrentShield() - 10f);
             }
             else
             {
-                ShipStats.Instance.currentHealth -= 10;
+                ShipStats.Instance.SetCurrentHealth(ShipStats.Instance.GetCurrentHealth() - 10f);
             }
             TakeDamage(5f);
         }

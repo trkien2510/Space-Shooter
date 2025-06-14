@@ -9,37 +9,31 @@ public class Bullet : MonoBehaviour
     public List<Sprite> largeBullets = new List<Sprite>();
 
     public int bulletSize;
+    public int bulletColor;
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
     private Animator anim;
 
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
+        anim = GetComponent<Animator>();
+    }
+
     public void InitializeBullet(int size)
     {
-        if (spriteRenderer == null)
-        {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-        }
-        if (rb == null)
-        {
-            rb = GetComponent<Rigidbody2D>();
-        }
-        if (capsuleCollider == null)
-        {
-            capsuleCollider = GetComponent<CapsuleCollider2D>();
-        }
-        if (anim == null)
-        {
-            anim = GetComponent<Animator>();
-        }
-
         anim.enabled = true;
+        capsuleCollider.enabled = true;
         anim.SetBool("Explosion", false);
         bulletSize = size;
+        bulletColor= ShipStats.Instance.GetRandBulletColor();
         SetBulletSprite();
 
-        rb.velocity = transform.right * ShipStats.Instance.bulletSpeed;
+        rb.velocity = transform.right * ShipStats.Instance.GetBulletSpeed();
     }
 
     private void Update()
@@ -54,15 +48,15 @@ public class Bullet : MonoBehaviour
     {
         if (bulletSize == 1)
         {
-            spriteRenderer.sprite = smallBullets[ShipStats.Instance.randBulletColor];
+            spriteRenderer.sprite = smallBullets[bulletColor];
         }
         else if (bulletSize == 2)
         {
-            spriteRenderer.sprite = mediumBullets[ShipStats.Instance.randBulletColor];
+            spriteRenderer.sprite = mediumBullets[bulletColor];
         }
         else if (bulletSize == 3)
         {
-            spriteRenderer.sprite = largeBullets[ShipStats.Instance.randBulletColor];
+            spriteRenderer.sprite = largeBullets[bulletColor];
         }
     }
 
@@ -70,6 +64,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
+            capsuleCollider.enabled = false;
             StartCoroutine(BulletExplosion());
         }
     }
@@ -78,10 +73,8 @@ public class Bullet : MonoBehaviour
     {
         rb.velocity = Vector2.zero;
         anim.SetBool("Explosion", true);
-        capsuleCollider.enabled = false;
         yield return new WaitForSeconds(0.2f);
         anim.enabled = false;
-        capsuleCollider.enabled = true;
         SetBulletSprite();
         gameObject.SetActive(false);
     }

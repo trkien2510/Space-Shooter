@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -24,9 +24,13 @@ public class EnemyShip : MonoBehaviour
     private int currentWaypointIndex = 0;
     private bool useWaypoints = false;
 
+    [Header("end of path idle timeout")]
+    private float idleTime = 0f;
+    private float maxIdleTime = 2f;
+    private bool reachedEndOfPath = false;
+
     [Header("drop item")]
     public List<LootItem> lootItems = new List<LootItem>();
-    private bool canDrop = true;
 
     private void Awake()
     {
@@ -50,11 +54,10 @@ public class EnemyShip : MonoBehaviour
         currentHealth = maxHealth;
 
         isDead = false;
-        canDrop = true;
 
         if (path != null && path.Count > 0)
         {
-            waypoints = path;
+            waypoints = new List<Transform>(path);
             currentWaypointIndex = 0;
             useWaypoints = true;
         }
@@ -73,17 +76,35 @@ public class EnemyShip : MonoBehaviour
 
     private void Update()
     {
-        if (useWaypoints && waypoints != null && currentWaypointIndex < waypoints.Count)
+        if (useWaypoints && waypoints != null && currentWaypointIndex < waypoints.Count && waypoints[currentWaypointIndex] != null)
         {
             Vector3 target = waypoints[currentWaypointIndex].position;
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
             if (Vector3.Distance(transform.position, target) < 0.1f)
             {
                 currentWaypointIndex++;
             }
+
+            reachedEndOfPath = false;
+            idleTime = 0f;
+        }
+        else if (useWaypoints && (waypoints == null || currentWaypointIndex >= waypoints.Count))
+        {
+            if (!reachedEndOfPath)
+            {
+                reachedEndOfPath = true;
+                idleTime = 0f;
+            }
+
+            idleTime += Time.deltaTime;
+            if (idleTime >= maxIdleTime)
+            {
+                gameObject.SetActive(false);
+            }
         }
 
-        if (transform.position.y <= -7f || transform.position.x >= 10f || transform.position.x <= -10f)
+        if (transform.position.y <= -10f || transform.position.x >= 15f || transform.position.x <= -15f)
         {
             gameObject.SetActive(false);
         }
@@ -96,21 +117,20 @@ public class EnemyShip : MonoBehaviour
             Bullet bullet = collision.GetComponent<Bullet>();
             if (bullet != null)
             {
-                float damage = bullet.bulletSize * ShipStats.Instance.bulletDamage;
+                float damage = bullet.bulletSize * ShipStats.Instance.GetBulletDamage();
                 TakeDMG(damage);
             }
         }
 
         if (collision.CompareTag("Player"))
         {
-            if (ShipStats.Instance.currentShield > 0)
+            if (ShipStats.Instance.GetCurrentShield() > 0)
             {
-                ShipStats.Instance.currentHealth -= (ShipStats.Instance.currentShield - 10 >= 0) ? 0 : -(ShipStats.Instance.currentShield - 10);
-                ShipStats.Instance.currentShield -= 10;
+                ShipStats.Instance.SetCurrentShield(ShipStats.Instance.GetCurrentShield() - 10f);
             }
             else
             {
-                ShipStats.Instance.currentHealth -= 10;
+                ShipStats.Instance.SetCurrentHealth(ShipStats.Instance.GetCurrentHealth() - 10f);
             }
             TakeDMG(5f);
         }
@@ -131,7 +151,6 @@ public class EnemyShip : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
-        canDrop = false;
         DropItem();
         circleCollider2D.enabled = false;
         StartCoroutine(EnemyExplosion());
