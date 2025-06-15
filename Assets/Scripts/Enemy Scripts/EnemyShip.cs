@@ -158,6 +158,7 @@ public class EnemyShip : MonoBehaviour
 
     private IEnumerator EnemyExplosion()
     {
+        GameManager.Instance.SetScore(GameManager.Instance.GetScore() + 20);
         rb.velocity = Vector2.zero;
         anim.SetBool("Explosion", true);
         AudioManager.Instance.PlayExplosionSFX();

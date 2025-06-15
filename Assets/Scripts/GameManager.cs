@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    private int playerScore = 0;
+    private int score = 0;
+    private int bestScore = 0;
 
     private void Awake()
     {
@@ -21,14 +22,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddScore(int score)
-    {
-        playerScore += score;
-        Debug.Log("Score: " + playerScore);
-    }
+    public int GetScore() => score;
+    public void SetScore(int value) => score = Mathf.Max(value, 0);
 
-    public int GetScore()
-    {
-        return playerScore;
-    }
+    public int GetBestScore() => bestScore;
+    public void SetBestScore(int score) => bestScore = Mathf.Max(score, 0);
 }
