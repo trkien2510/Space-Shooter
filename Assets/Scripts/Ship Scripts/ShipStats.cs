@@ -18,16 +18,12 @@ public class ShipStats : MonoBehaviour
     private float currentShield;
     private float maxShield = 50f;
 
-    [Header("Bullet Color")]
-    private int randBulletColor;
-
     private void Awake()
     {
         Instance = this;
         bulletCount = 1;
         currentHealth = maxHealth;
         currentShield = maxShield;
-        randBulletColor = Random.Range(0, 6);
     }
     void Start()
     {
@@ -65,7 +61,4 @@ public class ShipStats : MonoBehaviour
 
     public float GetMaxShield() => maxShield;
     public void SetMaxShield(float value) => maxShield = value;
-
-    public int GetRandBulletColor() => randBulletColor;
-    public void SetRandBulletColor(int value) => randBulletColor = Mathf.Clamp(value, 0, 5);
 }

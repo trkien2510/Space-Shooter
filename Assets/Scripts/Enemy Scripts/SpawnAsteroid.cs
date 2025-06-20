@@ -40,7 +40,7 @@ public class SpawnAsteroid : MonoBehaviour
 
     private void SpawnAsteroidObject(string tag)
     {
-        Vector2 spawnPosition = new Vector2(Random.Range(-8f, 8f), 7f);
+        Vector2 spawnPosition = new Vector2(Random.Range(-10f, 15f), 7f);
         GameObject asteroid = ObjectPooler.Instance.SpawnObject(tag, spawnPosition, Quaternion.identity);
         if (asteroid != null)
         {

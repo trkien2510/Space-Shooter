@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class SpawnEnemyShip : MonoBehaviour
 {
-    public List<Transform> waypointGroup1;
-    public List<Transform> waypointGroup2;
-    public List<Transform> waypointGroup3;
+    [SerializeField] private List<GameObject> waypointGroup;
 
-    public float spawnInterval = 5f;
-    public float spawnDelay = 1f;
+    [SerializeField] private float spawnInterval = 5f;
+    [SerializeField] private float spawnDelay = 1f;
 
     private void Start()
     {
@@ -43,20 +41,6 @@ public class SpawnEnemyShip : MonoBehaviour
                     yield return new WaitForSeconds(spawnDelay);
                 }
             }
-            else
-            {
-                Vector3 randomPos = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
-                GameObject enemy = ObjectPooler.Instance.SpawnObject("EnemyShip", randomPos, Quaternion.identity);
-
-                if (enemy != null)
-                {
-                    EnemyShip enemyScript = enemy.GetComponent<EnemyShip>();
-                    if (enemyScript != null)
-                    {
-                        enemyScript.InitializeEnemyShip();
-                    }
-                }
-            }
 
             yield return new WaitForSeconds(spawnInterval);
         }
@@ -64,13 +48,14 @@ public class SpawnEnemyShip : MonoBehaviour
 
     private List<Transform> GetRandomWaypoint()
     {
-        int rand = Random.Range(0, 4);
-        switch (rand)
+        int rand = Random.Range(0, waypointGroup.Count);
+        List<Transform> children = new List<Transform>();
+
+        Transform parentTransform = waypointGroup[rand].transform;
+        foreach (Transform child in parentTransform)
         {
-            case 0: return waypointGroup1;
-            case 1: return waypointGroup2;
-            case 2: return waypointGroup3;
-            default: return null;
+            children.Add(child);
         }
+        return children;
     }
 }

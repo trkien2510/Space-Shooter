@@ -12,10 +12,22 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void LoadGame()
+    public void LoadPlanet(string num)
     {
         AudioManager.Instance.SetBGMVolume(0f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Planet " + num);
+    }
+
+    public void LoadStar(string num)
+    {
+        AudioManager.Instance.SetBGMVolume(0f);
+        SceneManager.LoadScene("Star " + num);
+    }
+
+    public void LoadGalaxy(string num)
+    {
+        AudioManager.Instance.SetBGMVolume(0f);
+        SceneManager.LoadScene("Galaxy " + num);
     }
 
     public void Resume()

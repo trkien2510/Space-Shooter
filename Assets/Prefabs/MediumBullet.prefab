@@ -70,6 +70,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b817f2d360f2a714ea9527d34c0d5433, type: 3}
   - {fileID: 21300000, guid: af507773d9ba66140b50e4d231661918, type: 3}
   bulletSize: 2
+  bulletColor: 0
 --- !u!212 &8712653665344422484
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -108,8 +109,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 532478437
+  m_SortingLayer: 3
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: ed1e1a64699725f49a372d4b34e6799a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

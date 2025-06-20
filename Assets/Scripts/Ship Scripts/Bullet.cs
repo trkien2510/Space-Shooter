@@ -26,11 +26,11 @@ public class Bullet : MonoBehaviour
 
     public void InitializeBullet(int size)
     {
-        anim.enabled = true;
+        anim.enabled = false;
         capsuleCollider.enabled = true;
         anim.SetBool("Explosion", false);
         bulletSize = size;
-        bulletColor= ShipStats.Instance.GetRandBulletColor();
+        bulletColor = PlayerPrefs.GetInt("BulletColorIndex", 0);
         SetBulletSprite();
 
         rb.velocity = transform.right * ShipStats.Instance.GetBulletSpeed();
@@ -64,6 +64,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
+            anim.enabled = true;
             capsuleCollider.enabled = false;
             StartCoroutine(BulletExplosion());
         }

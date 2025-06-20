@@ -43,3 +43,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BG
+    uniqueID: 1730208521
+    locked: 0
+  - name: Asterol
+    uniqueID: 886369543
+    locked: 0
+  - name: Ship
+    uniqueID: 532478437
+    locked: 0
+  - name: UI
+    uniqueID: 2023175747
+    locked: 0

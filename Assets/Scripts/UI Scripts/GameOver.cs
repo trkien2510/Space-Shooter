@@ -26,6 +26,7 @@ public class GameOver : MonoBehaviour
             GameObject mainShip = GameObject.FindGameObjectWithTag("Player");
             if (mainShip != null)
             {
+                mainShip.GetComponent<Animator>().enabled = true;
                 mainShip.GetComponent<ShipFollowMouse>().enabled = false;
                 mainShip.GetComponent<BulletShooter>().enabled = false;
             }
