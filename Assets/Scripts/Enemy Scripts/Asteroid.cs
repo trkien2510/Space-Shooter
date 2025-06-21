@@ -89,7 +89,7 @@ public class Asteroid : MonoBehaviour
 
     private IEnumerator AsteroidExplosion()
     {
-        GameManager.Instance.SetScore(GameManager.Instance.GetScore() + 10);
+        GameManager.Instance.SetCurrentScore(GameManager.Instance.GetCurrentScore() + 10);
         rb.velocity = Vector2.zero;
         anim.SetBool("Explosion", true);
         AudioManager.Instance.PlayExplosionSFX();

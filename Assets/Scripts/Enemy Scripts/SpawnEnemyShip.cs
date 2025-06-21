@@ -6,8 +6,10 @@ public class SpawnEnemyShip : MonoBehaviour
 {
     [SerializeField] private List<GameObject> waypointGroup;
 
-    [SerializeField] private float spawnInterval = 5f;
-    [SerializeField] private float spawnDelay = 1f;
+    [Header("Spawn Settings")]
+    private float spawnInterval;
+    [SerializeField] private float spawnDelay;
+    [SerializeField] private int maxEnemies = 5;
 
     private void Start()
     {
@@ -22,10 +24,10 @@ public class SpawnEnemyShip : MonoBehaviour
 
             if (selectedPath != null && selectedPath.Count > 0)
             {
-                spawnInterval = 5f + selectedPath.Count * 0.5f;
+                spawnInterval = 5f + maxEnemies * 0.5f;
                 Vector3 spawnOrigin = selectedPath[0].position;
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < maxEnemies; i++)
                 {
                     GameObject enemy = ObjectPooler.Instance.SpawnObject("EnemyShip", spawnOrigin, Quaternion.identity);
 

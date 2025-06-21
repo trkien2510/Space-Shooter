@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class GameOver : MonoBehaviour
 {
-    public GameObject gameOverPanel;
-    public GameObject scoreText;
-    public GameObject bestScoreText;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject scoreText;
 
     private bool shipIsDead = false;
 
@@ -41,7 +40,6 @@ public class GameOver : MonoBehaviour
         ship.GetComponent<SpriteRenderer>().enabled = false;
         yield return new WaitForSeconds(2f);
         gameOverPanel.SetActive(true);
-        scoreText.GetComponent<UnityEngine.UI.Text>().text = "Score: " + GameManager.Instance.GetScore().ToString();
-        bestScoreText.GetComponent<UnityEngine.UI.Text>().text = "Best Score: " + GameManager.Instance.GetBestScore().ToString();
+        scoreText.GetComponent<UnityEngine.UI.Text>().text = "Score: " + GameManager.Instance.GetCurrentScore().ToString();
     }
 }

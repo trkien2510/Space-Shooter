@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyShip : MonoBehaviour
 {
@@ -158,7 +159,7 @@ public class EnemyShip : MonoBehaviour
 
     private IEnumerator EnemyExplosion()
     {
-        GameManager.Instance.SetScore(GameManager.Instance.GetScore() + 20);
+        GameManager.Instance.SetCurrentScore(GameManager.Instance.GetCurrentScore() + 20);
         rb.velocity = Vector2.zero;
         anim.SetBool("Explosion", true);
         AudioManager.Instance.PlayExplosionSFX();
